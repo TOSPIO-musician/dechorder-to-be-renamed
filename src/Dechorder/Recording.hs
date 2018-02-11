@@ -1,14 +1,15 @@
-module Dechorder.Recording ( record
-                           ) where
+module Dechorder.Recording where
 
+import Data.Array
 import Sound.Pulse.Simple
+import Dechorder.Type
 
 type SampleRate = Int
 type Duration = Float
 
 record :: SampleRate
        -> Duration
-       -> IO [Float]
+       -> IO (Array Int Float)
 record sr dur = do
   s <- simpleNew
        Nothing  -- Server name
@@ -23,6 +24,6 @@ record sr dur = do
        )  -- SampleSpec
        Nothing  -- Label channels
        Nothing  -- Buffer size, etc
-  d <- simpleRead s $ (round $ (fromIntegral sr) * dur)
+  d <- simpleRead s (round $ (fromIntegral sr) * dur)
   simpleFree s
-  return d
+  return $ listArray (0, length d) d

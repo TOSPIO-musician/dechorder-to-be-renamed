@@ -21,6 +21,7 @@ description:         Please see the README on Github at <https://github.com/y-us
 
 dependencies:
 - base >= 4.7 && < 5
+- array
 - dsp
 - pulse-simple
 
@@ -48,3 +49,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - dechorder
+    - tasty
+    - tasty-hunit
