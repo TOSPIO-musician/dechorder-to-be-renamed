@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c0a81e8cf5e70b11070d9e76518f7cf59c1e2531b849bc0a623ed868b28915ff
+-- hash: 46e7fbcde85f5718241fea1a15d1ef9fb00b9732faf83cf9906bcb13867c975a
 
 name:           dechorder
 version:        0.1.0.0
@@ -64,9 +64,11 @@ test-suite dechorder-test
   main-is: Spec.hs
   hs-source-dirs:
       test
+  default-extensions: ImplicitParams
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      array
+      HUnit-approx
+    , array
     , base >=4.7 && <5
     , dechorder
     , dsp
@@ -74,5 +76,8 @@ test-suite dechorder-test
     , tasty
     , tasty-hunit
   other-modules:
+      Dechorder.TestCase
+      MetaTest
+      Util
       Paths_dechorder
   default-language: Haskell2010

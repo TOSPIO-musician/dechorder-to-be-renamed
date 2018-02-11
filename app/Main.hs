@@ -1,6 +1,6 @@
 module Main where
 
-import Dechorder
+import           Dechorder
 
 main :: IO ()
 main = do

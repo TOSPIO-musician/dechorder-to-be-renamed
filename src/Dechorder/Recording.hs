@@ -1,8 +1,8 @@
 module Dechorder.Recording where
 
-import Data.Array
-import Sound.Pulse.Simple
-import Dechorder.Type
+import           Data.Array
+import           Dechorder.Type
+import           Sound.Pulse.Simple
 
 type SampleRate = Int
 type Duration = Float
@@ -18,7 +18,7 @@ record sr dur = do
        Nothing  -- Name of sink or source
        "Dechorder sound sampler"  -- Description of client
        ( SampleSpec  -- The only SampleSpec constructor
-         (F32  LittleEndian)
+         (F32 LittleEndian)
          sr
          1  -- Channels
        )  -- SampleSpec

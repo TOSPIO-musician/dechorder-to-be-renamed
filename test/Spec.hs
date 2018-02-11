@@ -1,13 +1,15 @@
-import Test.Tasty
-import Test.Tasty.HUnit
-import Dechorder.Internal
+import           Dechorder.Internal
+import qualified Dechorder.TestCase as DechorderTC (tests)
+import qualified MetaTest           (tests)
+import           Test.Tasty
+import           Test.Tasty.HUnit
 
-tests :: TestTree
-tests = testGroup "Dechorder tests"
-  [ testCase "DFT" $
-    let samples = [0, 100, 200, 100, 0, 100, 200, 100, 0] :: [Float]
-    in print $ dft $ toSampleChunk samples
+
+allTests :: TestTree
+allTests = testGroup "All tests" $
+  [ MetaTest.tests
+  , DechorderTC.tests
   ]
 
 main :: IO ()
-main = defaultMain tests
+main = defaultMain allTests

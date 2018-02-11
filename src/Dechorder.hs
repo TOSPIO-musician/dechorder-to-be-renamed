@@ -1,4 +1,4 @@
 module Dechorder ( module Dechorder.Recording
                  ) where
 
-import Dechorder.Recording (record)
+import           Dechorder.Recording (record)

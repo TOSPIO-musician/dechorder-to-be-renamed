@@ -49,5 +49,8 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - dechorder
+    - HUnit-approx
     - tasty
     - tasty-hunit
+    default-extensions:
+    - ImplicitParams

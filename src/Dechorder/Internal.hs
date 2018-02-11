@@ -3,6 +3,6 @@ module Dechorder.Internal ( module Dechorder.Recording
                           , module Dechorder.Util
                           ) where
 
-import Dechorder.Recording
-import Dechorder.Transform
-import Dechorder.Util
+import           Dechorder.Recording
+import           Dechorder.Transform
+import           Dechorder.Util
