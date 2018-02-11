@@ -26,4 +26,4 @@ record sr dur = do
        Nothing  -- Buffer size, etc
   d <- simpleRead s (round $ (fromIntegral sr) * dur)
   simpleFree s
-  return $ listArray (0, length d) d
+  return $ listArray (0, length d-1) d
