@@ -1,4 +1,5 @@
-module Dechorder.Recording where
+module Dechorder.Recording ( record
+                           ) where
 
 import Sound.Pulse.Simple
 

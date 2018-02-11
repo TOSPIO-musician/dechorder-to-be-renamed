@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5ea06e3d2fefffa97ab852b104d1a2410724d7d86a9d4dfb9446e64ef995dab4
+-- hash: 3bca85baf05b98fb3a68de05b87310596067ff195188b7c7a2090d9f8c44789c
 
 name:           dechorder
 version:        0.1.0.0
@@ -30,10 +30,12 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , dsp
     , pulse-simple
   exposed-modules:
       Dechorder
       Dechorder.Recording
+      Dechorder.Transform
   other-modules:
       Paths_dechorder
   default-language: Haskell2010
@@ -46,6 +48,7 @@ executable dechorder-exe
   build-depends:
       base >=4.7 && <5
     , dechorder
+    , dsp
     , pulse-simple
   other-modules:
       Paths_dechorder
@@ -60,6 +63,7 @@ test-suite dechorder-test
   build-depends:
       base >=4.7 && <5
     , dechorder
+    , dsp
     , pulse-simple
   other-modules:
       Paths_dechorder
