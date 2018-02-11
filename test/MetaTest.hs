@@ -5,7 +5,7 @@ module MetaTest where
 import           Test.HUnit.Approx
 import           Test.Tasty
 import           Test.Tasty.HUnit
-import           Util
+import           TestUtil
 
 tests :: TestTree
 tests = testGroup "Tests for test"

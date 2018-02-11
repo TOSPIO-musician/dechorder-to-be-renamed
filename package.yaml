@@ -50,6 +50,7 @@ tests:
     dependencies:
     - dechorder
     - HUnit-approx
+    - pretty
     - tasty
     - tasty-hunit
     default-extensions:

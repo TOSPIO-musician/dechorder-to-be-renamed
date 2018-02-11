@@ -1,7 +1,11 @@
-module Util where
+module TestUtil where
 
+import           Control.Monad
 import           Test.HUnit.Approx
 import           Test.Tasty.HUnit
+
+printList :: (Traversable t, Show a) => t a -> IO ()
+printList = void . traverse print
 
 sin :: Double -> Double -> Double
 sin f t = Prelude.sin (f * t)

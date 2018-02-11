@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 46e7fbcde85f5718241fea1a15d1ef9fb00b9732faf83cf9906bcb13867c975a
+-- hash: 55d999a43144149707a6c59f8fdd62804edf54fce70e479a30aca849b70c55dc
 
 name:           dechorder
 version:        0.1.0.0
@@ -72,12 +72,13 @@ test-suite dechorder-test
     , base >=4.7 && <5
     , dechorder
     , dsp
+    , pretty
     , pulse-simple
     , tasty
     , tasty-hunit
   other-modules:
       Dechorder.TestCase
       MetaTest
-      Util
+      TestUtil
       Paths_dechorder
   default-language: Haskell2010
