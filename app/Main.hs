@@ -2,7 +2,12 @@ module Main where
 
 import           Dechorder
 
+samplingParams = SamplingParams { sampleRate = 22000
+                                , duration = 0.5
+                                }
+
 main :: IO ()
 main = do
-  s <- record 44100 0.1
-  print s
+  s <- record samplingParams
+  let (freq, _):_ = analyze samplingParams s
+  print $ freqKeyLookup freq
