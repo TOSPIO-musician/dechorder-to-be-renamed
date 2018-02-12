@@ -17,9 +17,12 @@ dft chunk = arrayToVector $ DFT.dft $ vectorToArray chunk
 keepHalf :: SampleChunk -> SampleChunk
 keepHalf chunk = V.take (V.length chunk `div` 2) chunk
 
+keepHalfF :: SampleChunkF -> SampleChunkF
+keepHalfF = keepHalf
+
 analyze :: SamplingParams -> SampleChunk -> [(Frequency, Amplitude)]
 analyze SamplingParams{..} chunk = let
-  maxPos = maxIndexBy orderFunc $ keepHalf $ dft chunk
+  maxPos = maxIndexBy orderFunc $ keepHalfF $ dft chunk
   freq = fromIntegral maxPos / duration
   in [(freq, magnitude $ chunk V.! maxPos)]
   where
