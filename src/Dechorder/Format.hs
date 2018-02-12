@@ -1,6 +1,6 @@
 module Dechorder.Format where
 
-import           Dechorder.Type
+import           Dechorder.Base
 
 data Key = C | Db | D | Eb | E | F | Gb | G | Ab | A | Bb | B
          deriving (Show, Eq)

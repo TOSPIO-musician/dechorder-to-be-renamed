@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 448d6f853a89d37a1c29e48f61c990df33590174c76bb06a01dd5cf263d02008
+-- hash: e092d725ff757445f5f6b2f2ac851fd673f066ed020016870ce48bdbf0541636
 
 name:           dechorder
 version:        0.1.0.0
@@ -38,10 +38,10 @@ library
   exposed-modules:
       Dechorder
       Dechorder.Analyze
+      Dechorder.Base
       Dechorder.Format
       Dechorder.Internal
-      Dechorder.Recording
-      Dechorder.Type
+      Dechorder.Record
       Dechorder.Util
   other-modules:
       Paths_dechorder

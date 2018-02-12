@@ -4,7 +4,7 @@ import           Data.Array
 import           Data.Array.ST
 import           Data.Complex
 import qualified Data.Vector      as V
-import           Dechorder.Type
+import           Dechorder.Base
 import           System.IO.Unsafe
 
 toSampleChunk :: [Float] -> SampleChunk

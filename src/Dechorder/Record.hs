@@ -1,9 +1,19 @@
-module Dechorder.Recording where
+module Dechorder.Record where
 
 import           Data.Array
-import           Dechorder.Type
+import           Dechorder.Base
 import           Dechorder.Util
 import           Sound.Pulse.Simple
+
+
+data SamplingParams = SamplingParams { sampleRate :: SampleRate
+                                     , duration :: Duration
+                                     }
+
+defaultSamplingParams :: SamplingParams
+defaultSamplingParams = SamplingParams { sampleRate = 44100
+                                       , duration = 1
+                                       }
 
 record :: SamplingParams
        -> IO SampleChunk

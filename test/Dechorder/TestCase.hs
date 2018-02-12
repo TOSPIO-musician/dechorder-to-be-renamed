@@ -1,6 +1,5 @@
 module Dechorder.TestCase where
 
-import           Data.Array
 import           Dechorder.Internal
 import           Test.Tasty
 import           Test.Tasty.HUnit
@@ -26,8 +25,13 @@ sineWaveSamplingParams = SamplingParams { sampleRate = 24
                                         , duration = 2
                                         }
 
+sineWaveAnalysisOptions :: AnalysisOptions
+sineWaveAnalysisOptions = defaultAnalysisOptions{ samplingParams = sineWaveSamplingParams
+                                                , range = (0, 100)
+                                                }
+
 -- sin x + cos (2*x-pi/3)
-piCycleChunk = [Float]
+piCycleChunk :: [Float]
 piCycleChunk =
   [ 0.5, 1.2225624520175484, 1.5659328530262786, 1.4781476007338057, 1.055584979562807
   , 0.5, 3.7511058652552665e-2, -8.134535406638488e-2, 0.20448853110729415, 0.5
@@ -36,6 +40,6 @@ piCycleChunk =
 tests :: TestTree
 tests = testGroup "Dechorder tests"
   [ testCase "DFT" $ do
-      let maxFreq = analyze sineWaveSamplingParams sineWaveSampleChunk
-      2.0 @=? fst ((analyze sineWaveSamplingParams sineWaveSampleChunk) !! 0)
+      let maxFreq = analyze sineWaveAnalysisOptions sineWaveSampleChunk
+      2.0 @=? fst ((analyze sineWaveAnalysisOptions sineWaveSampleChunk) !! 0)
   ]

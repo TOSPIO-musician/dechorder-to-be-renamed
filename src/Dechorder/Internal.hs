@@ -1,12 +1,12 @@
-module Dechorder.Internal ( module Dechorder.Recording
+module Dechorder.Internal ( module Dechorder.Record
                           , module Dechorder.Analyze
-                          , module Dechorder.Type
+                          , module Dechorder.Base
                           , module Dechorder.Format
                           , module Dechorder.Util
                           ) where
 
 import           Dechorder.Analyze
 import           Dechorder.Format
-import           Dechorder.Recording
-import           Dechorder.Type
+import           Dechorder.Record
+import           Dechorder.Base
 import           Dechorder.Util
