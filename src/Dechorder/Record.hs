@@ -11,7 +11,7 @@ data SamplingParams = SamplingParams { sampleRate :: SampleRate
                                      }
 
 defaultSamplingParams :: SamplingParams
-defaultSamplingParams = SamplingParams { sampleRate = 44100
+defaultSamplingParams = SamplingParams { sampleRate = 22000
                                        , duration = 1
                                        }
 

@@ -3,7 +3,7 @@ module Dechorder.Format where
 import           Dechorder.Base
 
 data Key = C | Db | D | Eb | E | F | Gb | G | Ab | A | Bb | B
-         deriving (Show, Eq)
+         deriving (Ord, Eq, Show)
 
 freqRange :: (Frequency, Frequency)
 freqRange = (220, 440)
@@ -31,3 +31,13 @@ freqKeyLookup f = freqKeyLookup_ $ normalize f
       | f < 220 * 2**(21/24) = G
       | f < 220 * 2**(23/24) = Ab
       | otherwise = A
+
+chordLookup :: [Key] -> String
+chordLookup [C, E, G]  = "Chord C"
+chordLookup [C, F, A]  = "Chord F"
+chordLookup [C, Eb, G] = "Chord Cm"
+chordLookup [D, G, B]  = "Chord G"
+chordLookup [E, Ab, B] = "Chord E"
+chordLookup [E, G, B]  = "Chord Em"
+chordLookup [E, A, B]  = "Chord Esus4"
+chordLookup others     = show others

@@ -6,7 +6,7 @@ import           Data.Complex
 import           Data.Foldable
 import           Data.Function
 import           Data.List
-import           Data.Vector                   as V
+import qualified Data.Vector                   as V
 import           Debug.Trace
 import           Dechorder.Base
 import           Dechorder.Record
@@ -22,9 +22,9 @@ data AnalysisOptions = AnalysisOptions { samplingParams :: SamplingParams
 defaultAnalysisOptions :: AnalysisOptions
 defaultAnalysisOptions =
   AnalysisOptions { samplingParams = defaultSamplingParams
-                  , range = (40, 20000)
+                  , range = (40, 2000)
                   , maxNotes = 4
-                  , magFilter = \maxAmp amp -> amp >= maxAmp / 3
+                  , magFilter = \maxAmp amp -> amp >= maxAmp / 4
                   }
 
 dft :: SampleChunk -> SampleChunkF
@@ -51,10 +51,9 @@ analyze AnalysisOptions{..} chunk = let
   where
     findDominant maxCount boundedFreqChunk = let
       maxAmp = snd $ V.maximumBy (compare `on` snd) boundedFreqChunk
-      threshold = maxAmp / 3
       filteredIndices = V.findIndices (magFilter maxAmp . snd) boundedFreqChunk
       filteredChunk = V.map (boundedFreqChunk V.!) filteredIndices
       in if V.length filteredIndices > maxCount
-         then []
+         then sortOn snd $ V.toList filteredChunk
          else sortOn snd $ V.toList filteredChunk
 

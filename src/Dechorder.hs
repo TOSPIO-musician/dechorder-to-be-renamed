@@ -7,5 +7,5 @@ module Dechorder ( module Dechorder.Analyze
 import           Dechorder.Analyze (analyze, defaultAnalysisOptions)
 import           Dechorder.Base    (Amplitude, Duration, Frequency, SampleChunk,
                                     SampleRate)
-import           Dechorder.Format  (Key (..), freqKeyLookup)
+import           Dechorder.Format  (Key (..), chordLookup, freqKeyLookup)
 import           Dechorder.Record  (defaultSamplingParams, record)
