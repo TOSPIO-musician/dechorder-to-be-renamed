@@ -21,9 +21,8 @@ analyze :: SamplingParams -> SampleChunk -> [(Frequency, Amplitude)]
 analyze SamplingParams{..} chunk = let
   maxPos = maxIndexBy orderFunc $ keepHalf $ dft chunk
   freq = fromIntegral maxPos / duration
-  in [(freq, amp2 $ chunk V.! maxPos)]
+  in [(freq, magnitude $ chunk V.! maxPos)]
   where
-    amp2 (a :+ b) = a * a + b * b
-    amp = sqrt . amp2
-    orderFunc = compare `on` amp2
+    magnitude2 (a :+ b) = a * a + b * b
+    orderFunc = compare `on` magnitude2
 
