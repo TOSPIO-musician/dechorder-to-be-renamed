@@ -15,3 +15,4 @@ type Amplitude = Float
 
 type SampleChunk = Vector (Complex Float)
 type SampleChunkF = Vector (Complex Float)
+type MagnitudeChunk = Vector Amplitude

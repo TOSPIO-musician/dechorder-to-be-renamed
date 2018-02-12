@@ -1,5 +1,6 @@
 module Main where
 
+import           Data.List
 import           Dechorder
 
 samplingParams = SamplingParams { sampleRate = 22000
@@ -9,5 +10,5 @@ samplingParams = SamplingParams { sampleRate = 22000
 main :: IO ()
 main = do
   s <- record samplingParams
-  let (freq, _):_ = analyze samplingParams s
-  print $ freqKeyLookup freq
+  let analyzeResult = analyze samplingParams s
+  print $ nub $ map (freqKeyLookup . fst) analyzeResult
