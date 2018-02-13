@@ -9,6 +9,7 @@ import           Data.Function
 import           Data.List
 import qualified Data.Vector                   as V
 import           Data.Vector.Conversion
+import qualified Data.Vector.Mutable           as MV
 import           Debug.Trace
 import           Dechorder.Base
 import           Dechorder.Record
@@ -24,9 +25,9 @@ data AnalysisOptions = AnalysisOptions { samplingParams :: SamplingParams
 defaultAnalysisOptions :: AnalysisOptions
 defaultAnalysisOptions =
   AnalysisOptions { samplingParams = defaultSamplingParams
-                  , range = (40, 2000)
+                  , range = (100, 2000)
                   , maxNotes = 4
-                  , magFilter = \maxAmp amp -> amp >= maxAmp / 4
+                  , magFilter = \maxAmp amp -> amp >= maxAmp / 2
                   }
 
 dft :: SampleChunkF -> SampleChunkF
@@ -41,7 +42,7 @@ keepHalfF = keepHalf
 toMagnitudeChunk :: SampleChunkF -> MagnitudeChunk
 toMagnitudeChunk = V.map magnitude
 
-analyzeF :: AnalysisOptions -> SampleChunkF -> [(Frequency, Amplitude)]
+analyzeF :: AnalysisOptions -> SampleChunkF -> [Key]
 analyzeF AnalysisOptions{..} chunkF = let
   freqDist = dft chunkF
   halfFreqDist = keepHalfF freqDist
@@ -49,15 +50,20 @@ analyzeF AnalysisOptions{..} chunkF = let
   freqChunk = V.imap (\idx val -> (fromIntegral idx / duration samplingParams, val)) magChunk
   boundedFreqChunk = V.takeWhile ((<= snd range) . fst) $ V.dropWhile ((< fst range) . fst) freqChunk
   in
-  findDominant maxNotes boundedFreqChunk
+  findDominant maxNotes $ scatterToKeySlots boundedFreqChunk
   where
-    findDominant maxCount boundedFreqChunk = let
-      maxAmp = snd $ V.maximumBy (compare `on` snd) boundedFreqChunk
-      filteredIndices = V.findIndices (magFilter maxAmp . snd) boundedFreqChunk
-      filteredChunk = V.map (boundedFreqChunk V.!) filteredIndices
-      in if V.length filteredIndices > maxCount
-         then sortOn snd $ V.toList filteredChunk
-         else sortOn snd $ V.toList filteredChunk
+    scatterToKeySlots :: V.Vector (Frequency, Amplitude) -> V.Vector Frequency
+    scatterToKeySlots freqChunk = V.create $ do
+      slots <- MV.replicate 12 0
+      flip V.mapM_ freqChunk $ \(freq, amp) -> do
+        MV.modify slots (+amp) (keyToIndex $ freqToKey freq)
+      return slots
+    findDominant maxNotes keySlots = let
+      maxAmp = V.maximum keySlots
+      filteredIndices = V.findIndices (magFilter maxAmp) keySlots
+      in if V.length filteredIndices > maxNotes
+         then sort $ map indexToKey $ V.toList filteredIndices
+         else sort $ map indexToKey $ V.toList filteredIndices
 
-analyze :: AnalysisOptions -> SampleChunk -> [(Frequency, Amplitude)]
+analyze :: AnalysisOptions -> SampleChunk -> [Key]
 analyze options = analyzeF options . complexify

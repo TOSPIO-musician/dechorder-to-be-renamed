@@ -12,3 +12,6 @@ type Amplitude = Float
 type SampleChunk = Vector Float
 type SampleChunkF = Vector (Complex Float)
 type MagnitudeChunk = Vector Amplitude
+
+data Key = C | Db | D | Eb | E | F | Gb | G | Ab | A | Bb | B
+         deriving (Ord, Eq, Show)

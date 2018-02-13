@@ -30,6 +30,7 @@ dependencies:
 default-extensions:
 - DuplicateRecordFields
 - ImplicitParams
+- MultiWayIf
 - RecordWildCards
 
 library:

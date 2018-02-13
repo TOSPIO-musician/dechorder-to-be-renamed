@@ -2,42 +2,23 @@ module Dechorder.Format where
 
 import           Dechorder.Base
 
-data Key = C | Db | D | Eb | E | F | Gb | G | Ab | A | Bb | B
-         deriving (Ord, Eq, Show)
-
-freqRange :: (Frequency, Frequency)
-freqRange = (220, 440)
-
-normalize :: Frequency -> Frequency
-normalize f
-  | f < fst freqRange = normalize (f * 2)
-  | f > snd freqRange = normalize (f / 2)
-  | otherwise = f
-
-freqKeyLookup :: Frequency -> Key
-freqKeyLookup f = freqKeyLookup_ $ normalize f
-  where
-    freqKeyLookup_ f
-      | f < 220 * 2**(1/24) = A
-      | f < 220 * 2**(3/24) = Bb
-      | f < 220 * 2**(5/24) = B
-      | f < 220 * 2**(7/24) = C
-      | f < 220 * 2**(9/24) = Db
-      | f < 220 * 2**(11/24) = D
-      | f < 220 * 2**(13/24) = Eb
-      | f < 220 * 2**(15/24) = E
-      | f < 220 * 2**(17/24) = F
-      | f < 220 * 2**(19/24) = Gb
-      | f < 220 * 2**(21/24) = G
-      | f < 220 * 2**(23/24) = Ab
-      | otherwise = A
-
 chordLookup :: [Key] -> String
-chordLookup [C, E, G]  = "Chord C"
-chordLookup [C, F, A]  = "Chord F"
-chordLookup [C, Eb, G] = "Chord Cm"
-chordLookup [D, G, B]  = "Chord G"
-chordLookup [E, Ab, B] = "Chord E"
-chordLookup [E, G, B]  = "Chord Em"
-chordLookup [E, A, B]  = "Chord Esus4"
-chordLookup others     = show others
+-- C
+chordLookup [C, E, G]      = "Chord C"
+chordLookup [C, Eb, G]     = "Chord Cm"
+chordLookup [C, E, G, B]   = "Chord Cmaj7"
+chordLookup [C, Eb, G, Bb] = "Chord Cm7"
+chordLookup [C, E, G, Bb]  = "Chord C7"
+-- D
+chordLookup [D, Gb, A]     = "Chord D"
+chordLookup [D, F, A]      = "Chord Dm"
+chordLookup [D, Gb, A, Db] = "Chord Dmaj7"
+chordLookup [D, F, A, C]   = "Chord Dm7"
+chordLookup [D, Gb, A, C]  = "Chord D7"
+-- E
+chordLookup [C, F, A]      = "Chord F"
+chordLookup [D, G, B]      = "Chord G"
+chordLookup [E, Ab, B]     = "Chord E"
+chordLookup [E, G, B]      = "Chord Em"
+chordLookup [E, A, B]      = "Chord Esus4"
+chordLookup others         = show others
