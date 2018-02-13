@@ -9,6 +9,6 @@ type Duration = Float
 type Frequency = Float
 type Amplitude = Float
 
-type SampleChunk = Vector (Complex Float)
+type SampleChunk = Vector Float
 type SampleChunkF = Vector (Complex Float)
 type MagnitudeChunk = Vector Amplitude

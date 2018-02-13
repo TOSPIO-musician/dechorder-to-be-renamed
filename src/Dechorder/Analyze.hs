@@ -2,11 +2,13 @@ module Dechorder.Analyze where
 
 import           Control.Arrow
 import           Data.Array                    as A
+import           Data.Array.Conversion
 import           Data.Complex
 import           Data.Foldable
 import           Data.Function
 import           Data.List
 import qualified Data.Vector                   as V
+import           Data.Vector.Conversion
 import           Debug.Trace
 import           Dechorder.Base
 import           Dechorder.Record
@@ -27,21 +29,21 @@ defaultAnalysisOptions =
                   , magFilter = \maxAmp amp -> amp >= maxAmp / 4
                   }
 
-dft :: SampleChunk -> SampleChunkF
-dft chunk = arrayToVector $ DFT.dft $ vectorToArray chunk
+dft :: SampleChunkF -> SampleChunkF
+dft chunk = toVector $ DFT.dft $ toArray chunk
 
-keepHalf :: SampleChunk -> SampleChunk
+keepHalf :: SampleChunkF -> SampleChunkF
 keepHalf chunk = V.take (V.length chunk `div` 2) chunk
 
 keepHalfF :: SampleChunkF -> SampleChunkF
 keepHalfF = keepHalf
 
-toMagnitudeChunk :: SampleChunk -> MagnitudeChunk
+toMagnitudeChunk :: SampleChunkF -> MagnitudeChunk
 toMagnitudeChunk = V.map magnitude
 
-analyze :: AnalysisOptions -> SampleChunk -> [(Frequency, Amplitude)]
-analyze AnalysisOptions{..} chunk = let
-  freqDist = dft chunk
+analyzeF :: AnalysisOptions -> SampleChunkF -> [(Frequency, Amplitude)]
+analyzeF AnalysisOptions{..} chunkF = let
+  freqDist = dft chunkF
   halfFreqDist = keepHalfF freqDist
   magChunk = toMagnitudeChunk halfFreqDist
   freqChunk = V.imap (\idx val -> (fromIntegral idx / duration samplingParams, val)) magChunk
@@ -57,3 +59,5 @@ analyze AnalysisOptions{..} chunk = let
          then sortOn snd $ V.toList filteredChunk
          else sortOn snd $ V.toList filteredChunk
 
+analyze :: AnalysisOptions -> SampleChunk -> [(Frequency, Amplitude)]
+analyze options = analyzeF options . complexify

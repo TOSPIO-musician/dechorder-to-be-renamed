@@ -1,4 +1,4 @@
-module Dechorder.TestCase where
+module Tests.Dechorder where
 
 import           Dechorder.Internal
 import           Test.Tasty

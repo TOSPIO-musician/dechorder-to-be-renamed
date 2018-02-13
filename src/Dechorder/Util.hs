@@ -8,19 +8,10 @@ import           Dechorder.Base
 import           System.IO.Unsafe
 
 toSampleChunk :: [Float] -> SampleChunk
-toSampleChunk = V.fromList . map (:+ 0)
+toSampleChunk = V.fromList
 
 toSampleChunkF :: [Float] -> SampleChunkF
-toSampleChunkF = toSampleChunk
+toSampleChunkF = complexify . toSampleChunk
 
-vectorToArray :: V.Vector a -> Array Int a
-vectorToArray v = runSTArray $ do
-  a <- newArray_ (0, V.length v - 1)
-  flip V.imapM_ v $ \idx val -> writeArray a idx val
-  return a
-
-arrayToVector :: Array Int a -> V.Vector a
-arrayToVector a = let
-  len = snd $ bounds a
-  in
-  V.generate len $ \idx -> a ! idx
+complexify :: SampleChunk -> SampleChunkF
+complexify = V.map (:+ 0)

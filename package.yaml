@@ -25,6 +25,7 @@ dependencies:
 - dsp
 - pulse-simple
 - vector
+- array2vector >= 0.1 && < 0.2
 
 default-extensions:
 - DuplicateRecordFields

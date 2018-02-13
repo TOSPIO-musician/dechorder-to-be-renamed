@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e092d725ff757445f5f6b2f2ac851fd673f066ed020016870ce48bdbf0541636
+-- hash: 7464cd31860f24dbd00bf37aa01e5faacfa50803c4a39be3747d137126a9d078
 
 name:           dechorder
 version:        0.1.0.0
@@ -31,6 +31,7 @@ library
   default-extensions: DuplicateRecordFields ImplicitParams RecordWildCards
   build-depends:
       array
+    , array2vector >=0.1 && <0.2
     , base >=4.7 && <5
     , dsp
     , pulse-simple
@@ -55,6 +56,7 @@ executable dechorder-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       array
+    , array2vector >=0.1 && <0.2
     , base >=4.7 && <5
     , dechorder
     , dsp
@@ -74,6 +76,7 @@ test-suite dechorder-test
   build-depends:
       HUnit-approx
     , array
+    , array2vector >=0.1 && <0.2
     , base >=4.7 && <5
     , dechorder
     , dsp
@@ -83,8 +86,8 @@ test-suite dechorder-test
     , tasty-hunit
     , vector
   other-modules:
-      Dechorder.TestCase
       MetaTest
+      Tests.Dechorder
       TestUtil
       Paths_dechorder
   default-language: Haskell2010
