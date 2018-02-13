@@ -8,4 +8,4 @@ main = do
   let samplingParams = defaultSamplingParams
   s <- record samplingParams
   let analyzeResult = analyze defaultAnalysisOptions s
-  print $ chordLookup analyzeResult
+  putStrLn $ chordLookup analyzeResult

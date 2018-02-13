@@ -12,9 +12,9 @@ chordLookup [C, E, G, Bb]  = "Chord C7"
 -- D
 chordLookup [D, Gb, A]     = "Chord D"
 chordLookup [D, F, A]      = "Chord Dm"
-chordLookup [D, Gb, A, Db] = "Chord Dmaj7"
-chordLookup [D, F, A, C]   = "Chord Dm7"
-chordLookup [D, Gb, A, C]  = "Chord D7"
+chordLookup [Db, D, Gb, A] = "Chord Dmaj7"
+chordLookup [C, D, F, A]   = "Chord Dm7"
+chordLookup [C, D, Gb, A]  = "Chord D7"
 -- E
 chordLookup [C, F, A]      = "Chord F"
 chordLookup [D, G, B]      = "Chord G"

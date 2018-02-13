@@ -11,8 +11,8 @@ data SamplingParams = SamplingParams { sampleRate :: SampleRate
                                      }
 
 defaultSamplingParams :: SamplingParams
-defaultSamplingParams = SamplingParams { sampleRate = 44000
-                                       , duration = 0.5
+defaultSamplingParams = SamplingParams { sampleRate = 48000
+                                       , duration = 0.2
                                        }
 
 record :: SamplingParams

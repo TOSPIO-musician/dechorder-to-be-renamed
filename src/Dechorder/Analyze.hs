@@ -48,7 +48,10 @@ analyzeF AnalysisOptions{..} chunkF = let
   halfFreqDist = keepHalfF freqDist
   magChunk = toMagnitudeChunk halfFreqDist
   freqChunk = V.imap (\idx val -> (fromIntegral idx / duration samplingParams, val)) magChunk
-  boundedFreqChunk = V.takeWhile ((<= snd range) . fst) $ V.dropWhile ((< fst range) . fst) freqChunk
+  maxAmp = snd $ V.maximumBy (compare `on` snd) freqChunk
+  minAmp = snd $ V.minimumBy (compare `on` snd) freqChunk
+  threshold = minAmp + (maxAmp - minAmp) / 8
+  boundedFreqChunk = {-}V.filter ((> (maxAmp / 10)) . snd) $ -}V.takeWhile ((<= snd range) . fst) $ V.dropWhile ((< fst range) . fst) freqChunk
   in
   findDominant maxNotes $ scatterToKeySlots boundedFreqChunk
   where
