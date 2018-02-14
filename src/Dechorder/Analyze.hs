@@ -59,14 +59,14 @@ analyzeF AnalysisOptions{..} chunkF = let
     scatterToKeySlots freqChunk = V.create $ do
       slots <- MV.replicate 12 0
       flip V.mapM_ freqChunk $ \(freq, amp) -> do
-        MV.modify slots (+amp) (keyToIndex $ freqToKey freq)
+        MV.modify slots (+amp) (fromEnum $ freqToKey freq)
       return slots
     findDominant maxNotes keySlots = let
       maxAmp = V.maximum keySlots
       filteredIndices = V.findIndices (magFilter maxAmp) keySlots
       in if V.length filteredIndices > maxNotes
-         then sort $ map indexToKey $ V.toList filteredIndices
-         else sort $ map indexToKey $ V.toList filteredIndices
+         then sort $ map toEnum $ V.toList filteredIndices
+         else sort $ map toEnum $ V.toList filteredIndices
 
 analyze :: AnalysisOptions -> SampleChunk -> [Key]
 analyze options = analyzeF options . complexify

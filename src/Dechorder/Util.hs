@@ -16,37 +16,6 @@ toSampleChunkF = complexify . toSampleChunk
 complexify :: SampleChunk -> SampleChunkF
 complexify = V.map (:+ 0)
 
-{-# INLINE keyToIndex #-}
-keyToIndex :: Key -> Int
-keyToIndex C  = 0
-keyToIndex Db = 1
-keyToIndex D  = 2
-keyToIndex Eb = 3
-keyToIndex E  = 4
-keyToIndex F  = 5
-keyToIndex Gb = 6
-keyToIndex G  = 7
-keyToIndex Ab = 8
-keyToIndex A  = 9
-keyToIndex Bb = 10
-keyToIndex B  = 11
-
-{-# INLINE indexToKey #-}
-indexToKey :: Int -> Key
-indexToKey 0  = C
-indexToKey 1  = Db
-indexToKey 2  = D
-indexToKey 3  = Eb
-indexToKey 4  = E
-indexToKey 5  = F
-indexToKey 6  = Gb
-indexToKey 7  = G
-indexToKey 8  = Ab
-indexToKey 9  = A
-indexToKey 10 = Bb
-indexToKey 11 = B
-indexToKey _  = error "Impossible"
-
 {-# INLINE freqToKey #-}
 freqToKey :: Frequency -> Key
 freqToKey freq = let
