@@ -7,10 +7,10 @@ import qualified Data.Vector      as V
 import           Dechorder.Base
 import           System.IO.Unsafe
 
-toSampleChunk :: [Float] -> SampleChunk
+toSampleChunk :: [Double] -> SampleChunk
 toSampleChunk = V.fromList
 
-toSampleChunkF :: [Float] -> SampleChunkF
+toSampleChunkF :: [Double] -> SampleChunkF
 toSampleChunkF = complexify . toSampleChunk
 
 complexify :: SampleChunk -> SampleChunkF

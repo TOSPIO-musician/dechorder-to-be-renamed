@@ -30,8 +30,17 @@ defaultAnalysisOptions =
                   , magFilter = \maxAmp amp -> amp >= maxAmp / 2
                   }
 
-dft :: SampleChunkF -> SampleChunkF
-dft chunk = toVector $ DFT.dft $ toArray chunk
+dft :: SampleChunk -> SampleChunkF
+dft = toVector . DFT.dft . toArray . complexify
+
+chunkToFreqSlots :: SamplingParams -> SampleChunk -> (Double, MagnitudeChunk)
+chunkToFreqSlots !params !chunk = let
+  !dftResult = dft chunk
+  !length = V.length dftResult
+  !reservedLength = length `div` 2
+  !normalizedResult = V.map ((/ (fromIntegral length)) . (*2) . magnitude) $ V.take reservedLength dftResult
+  slotWidth = 1 / duration params
+  in (slotWidth, normalizedResult)
 
 keepHalf :: SampleChunkF -> SampleChunkF
 keepHalf chunk = V.take (V.length chunk `div` 2) chunk
@@ -39,19 +48,14 @@ keepHalf chunk = V.take (V.length chunk `div` 2) chunk
 keepHalfF :: SampleChunkF -> SampleChunkF
 keepHalfF = keepHalf
 
-toMagnitudeChunk :: SampleChunkF -> MagnitudeChunk
-toMagnitudeChunk = V.map magnitude
-
-analyzeF :: AnalysisOptions -> SampleChunkF -> [Key]
-analyzeF AnalysisOptions{..} chunkF = let
-  freqDist = dft chunkF
-  halfFreqDist = keepHalfF freqDist
-  magChunk = toMagnitudeChunk halfFreqDist
-  freqChunk = V.imap (\idx val -> (fromIntegral idx / duration samplingParams, val)) magChunk
-  maxAmp = snd $ V.maximumBy (compare `on` snd) freqChunk
-  minAmp = snd $ V.minimumBy (compare `on` snd) freqChunk
+analyze :: AnalysisOptions -> SampleChunk -> [Key]
+analyze AnalysisOptions{..} chunk = let
+  (slotWidth, slotDist) = chunkToFreqSlots samplingParams chunk
+  freqDist = V.zip (V.fromList [0, slotWidth..]) slotDist
+  maxAmp = V.maximum slotDist
+  minAmp = V.minimum slotDist
   threshold = minAmp + (maxAmp - minAmp) / 8
-  boundedFreqChunk = {-}V.filter ((> (maxAmp / 10)) . snd) $ -}V.takeWhile ((<= snd range) . fst) $ V.dropWhile ((< fst range) . fst) freqChunk
+  boundedFreqChunk = V.takeWhile ((<= snd range) . fst) $ V.dropWhile ((< fst range) . fst) freqDist
   in
   findDominant maxNotes $ scatterToKeySlots boundedFreqChunk
   where
@@ -67,6 +71,3 @@ analyzeF AnalysisOptions{..} chunkF = let
       in if V.length filteredIndices > maxNotes
          then sort $ map toEnum $ V.toList filteredIndices
          else sort $ map toEnum $ V.toList filteredIndices
-
-analyze :: AnalysisOptions -> SampleChunk -> [Key]
-analyze options = analyzeF options . complexify

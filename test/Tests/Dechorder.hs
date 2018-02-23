@@ -1,6 +1,7 @@
 module Tests.Dechorder where
 
 import           Control.Monad
+import qualified Data.Vector as V
 import           Dechorder.Internal
 import           Test.Tasty
 import           Test.Tasty.HUnit
@@ -36,7 +37,23 @@ utilTests = testGroup "Util tests"
           key @=? freqToKey freq
   ]
 
+analyzeTests :: TestTree
+analyzeTests = testGroup "Analyze tests"
+  [ testCase "DFT for sine" $ do
+      let samples = V.fromList $
+            [ 0, 0.707, 1, 0.707, 0, -0.707, -1, -0.707
+            , 0, 0.707, 1, 0.707, 0, -0.707, -1, -0.707
+            ]
+          expected = (0.5, V.fromList [0, 0, 1, 0, 0, 0, 0, 0])
+          actual = chunkToFreqSlots SamplingParams{ sampleRate = 8
+                                                  , duration = 2
+                                                  } samples
+      fst expected @=? fst actual
+      let ?epsilon = 0.01 in V.toList (snd expected) @+~? V.toList (snd actual)
+  ]
+
 tests :: TestTree
 tests = testGroup "Dechorder tests"
   [ utilTests
+  , analyzeTests
   ]
