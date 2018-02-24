@@ -40,6 +40,11 @@ packages:
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
+- Chart-1.8.3
+- Chart-cairo-1.8.3
+- Chart-gtk-1.8.3
+- gio-0.13.4.1
+- gtk-0.14.7
 - pulse-simple-0.1.14
 - git: https://github.com/y-usuzumi/array2vector.git
   commit: master
