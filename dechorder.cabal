@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 68a1ed45e1595ab669e46ef3633a0698444a3bbe03576e7d6da54f270b994135
+-- hash: b9ccac71ad5283722fc02920ec1ccd06f3206fbbbc47cf02b4f0f2c208b5cfbe
 
 name:           dechorder
 version:        0.1.0.0
@@ -30,7 +30,8 @@ library
       src
   default-extensions: BangPatterns DuplicateRecordFields ImplicitParams MultiWayIf RecordWildCards
   build-depends:
-      array
+      BoundedChan
+    , array
     , array2vector >=0.1 && <0.2
     , base >=4.7 && <5
     , dsp
@@ -55,7 +56,8 @@ executable dechorder
   default-extensions: BangPatterns DuplicateRecordFields ImplicitParams MultiWayIf RecordWildCards
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      array
+      BoundedChan
+    , array
     , array2vector >=0.1 && <0.2
     , base >=4.7 && <5
     , dechorder
@@ -73,7 +75,8 @@ executable dechorder-sampling-visualizer
   default-extensions: BangPatterns DuplicateRecordFields ImplicitParams MultiWayIf RecordWildCards
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Chart
+      BoundedChan
+    , Chart
     , Chart-cairo
     , Chart-gtk
     , array
@@ -96,7 +99,8 @@ test-suite dechorder-test
   default-extensions: BangPatterns DuplicateRecordFields ImplicitParams MultiWayIf RecordWildCards
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HUnit-approx
+      BoundedChan
+    , HUnit-approx
     , array
     , array2vector >=0.1 && <0.2
     , base >=4.7 && <5

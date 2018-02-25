@@ -20,12 +20,13 @@ extra-source-files:
 description:         Please see the README on Github at <https://github.com/y-usuzumi/dechorder#readme>
 
 dependencies:
-- base >= 4.7 && < 5
 - array
+- array2vector >= 0.1 && < 0.2
+- base >= 4.7 && < 5
+- BoundedChan
 - dsp
 - pulse-simple
 - vector
-- array2vector >= 0.1 && < 0.2
 
 default-extensions:
 - BangPatterns
