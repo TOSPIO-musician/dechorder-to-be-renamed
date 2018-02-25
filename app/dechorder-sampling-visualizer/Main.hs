@@ -1,19 +1,50 @@
 module Main where
 
+import           Control.Concurrent
+import           Control.Monad
+import           Control.Monad.IO.Class
 import           Dechorder
 import           Graphics.Rendering.Chart.Backend.Cairo
 import           Graphics.Rendering.Chart.Easy
 import           Graphics.Rendering.Chart.Gtk
-import           Graphics.UI.Gtk
+import qualified Graphics.UI.Gtk                        as G
 
-signal :: [Double] -> [(Double,Double)]
+signal :: [Double] -> [(Double, Double)]
 signal xs = [ (x,(sin (x*3.14159/45) + 1) / 2 * (sin (x*3.14159/5))) | x <- xs ]
+
+createRenderableWindowWithCanvas :: G.DrawingArea
+                                 -> Int
+                                 -> Int
+                                 -> IO G.Window
+createRenderableWindowWithCanvas canvas windowWidth windowHeight = do
+  window <- G.windowNew
+  G.widgetSetSizeRequest window windowWidth windowHeight
+  G.set window [G.containerChild G.:= canvas]
+  return window
+
+buildSpectrum :: [(Frequency, Amplitude)] -> Renderable ()
+buildSpectrum freqDist = toRenderable $ execEC $ do
+  layout_title .= "Spectrum Visualization"
+  setColors [opaque blue, opaque red]
+  plot (line "frequency" [freqDist])
 
 main :: IO ()
 main = do
-  let renderable = toRenderable $ execEC $ do
-        layout_title .= "Amplitude Modulation"
-        setColors [opaque blue, opaque red]
-        plot (line "am" [signal [0,(0.5)..400]])
-        plot (points "am points" (signal [0,7..400]))
-  renderableToWindow renderable 800 600
+  G.initGUI
+  canvas <- G.drawingAreaNew
+  window <- createRenderableWindowWithCanvas canvas 800 600
+  G.on canvas G.exposeEvent $ do
+    liftIO $ threadDelay 2000000
+    let renderable = buildSpectrum [(0, 0), (1, 5), (2, 5)]
+    liftIO $ updateCanvas renderable canvas
+    liftIO $ threadDelay 2000000
+    let renderable = buildSpectrum [(0, 0), (1, 20), (2, 5)]
+    liftIO $ updateCanvas renderable canvas
+    -- let renderable = toRenderable $ execEC $ do
+    --       layout_title .= "Amplitude Modulation"
+    --       setColors [opaque blue, opaque red]
+    --       plot (line "am" [signal [0,(0.5)..400]])
+    --       plot (points "am points" (signal [0,7..400]))
+    return True
+  G.widgetShowAll window
+  G.mainGUI
