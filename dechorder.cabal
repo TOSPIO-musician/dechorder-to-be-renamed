@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b9ccac71ad5283722fc02920ec1ccd06f3206fbbbc47cf02b4f0f2c208b5cfbe
+-- hash: 425a467fe57215a2fd8020289d90ef084abd5b2fa9ec588f03d853dea5cc5feb
 
 name:           dechorder
 version:        0.1.0.0
@@ -88,6 +88,7 @@ executable dechorder-sampling-visualizer
     , pulse-simple
     , vector
   other-modules:
+      Dechorder.Tool.SamplingVisualizer.GUI
       Paths_dechorder
   default-language: Haskell2010
 

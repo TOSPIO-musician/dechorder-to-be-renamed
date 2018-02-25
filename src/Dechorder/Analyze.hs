@@ -1,20 +1,21 @@
 module Dechorder.Analyze where
 
 import           Control.Arrow
-import           Data.Array                    as A
+import           Data.Array                         as A
 import           Data.Array.Conversion
 import           Data.Complex
 import           Data.Foldable
 import           Data.Function
 import           Data.List
-import qualified Data.Vector                   as V
+import qualified Data.Vector                        as V
 import           Data.Vector.Conversion
-import qualified Data.Vector.Mutable           as MV
+import qualified Data.Vector.Mutable                as MV
 import           Debug.Trace
 import           Dechorder.Base
 import           Dechorder.Record
 import           Dechorder.Util
-import qualified Numeric.Transform.Fourier.DFT as DFT
+import qualified Numeric.Transform.Fourier.DFT      as DFT
+import qualified Numeric.Transform.Fourier.FFTUtils as FFTUtils
 
 data AnalysisOptions = AnalysisOptions { samplingParams :: SamplingParams
                                        , range          :: (Frequency, Frequency)
@@ -33,12 +34,15 @@ defaultAnalysisOptions =
 dft :: SampleChunk -> SampleChunkF
 dft = toVector . DFT.dft . toArray . complexify
 
+rfft :: SampleChunk -> SampleChunk
+rfft = toVector . FFTUtils.rfft_mag . toArray
+
 chunkToFreqSlots :: SamplingParams -> SampleChunk -> (Double, MagnitudeChunk)
 chunkToFreqSlots !params !chunk = let
-  !dftResult = dft chunk
+  !dftResult = rfft chunk
   !length = V.length dftResult
   !reservedLength = length `div` 2
-  !normalizedResult = V.map ((/ (fromIntegral length)) . (*2) . magnitude) $ V.take reservedLength dftResult
+  !normalizedResult = V.map ((/ (fromIntegral length)) . (*2)) $ V.take reservedLength dftResult
   slotWidth = 1 / duration params
   in (slotWidth, normalizedResult)
 
