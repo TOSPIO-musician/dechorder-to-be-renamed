@@ -6,18 +6,21 @@ import           Dechorder.Util
 import           Sound.Pulse.Simple
 
 
+-- | Sampling parameters used when recording
 data SamplingParams = SamplingParams { sampleRate :: SampleRate
                                      , duration :: Duration
                                      }
 
+-- | The default sampling parameters when not specified
 defaultSamplingParams :: SamplingParams
 defaultSamplingParams = SamplingParams { sampleRate = 48000
                                        , duration = 0.1
                                        }
 
-record :: SamplingParams
+record :: Maybe SamplingParams
        -> IO SampleChunk
-record SamplingParams{..} = do
+record Nothing = record $ Just defaultSamplingParams
+record (Just SamplingParams{..}) = do
   s <- simpleNew
        Nothing  -- Server name
        "dechorder"  -- Client name

@@ -5,7 +5,6 @@ import           Dechorder
 
 main :: IO ()
 main = do
-  let samplingParams = defaultSamplingParams
-  s <- record samplingParams
+  s <- record Nothing
   let analyzeResult = analyze defaultAnalysisOptions s
   putStrLn $ chordLookup analyzeResult

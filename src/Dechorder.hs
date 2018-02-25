@@ -8,4 +8,4 @@ import           Dechorder.Analyze (analyze, defaultAnalysisOptions)
 import           Dechorder.Base    (Amplitude, Duration, Frequency, Key (..),
                                     SampleChunk, SampleRate)
 import           Dechorder.Format  (chordLookup)
-import           Dechorder.Record  (defaultSamplingParams, record)
+import           Dechorder.Record  (record)
