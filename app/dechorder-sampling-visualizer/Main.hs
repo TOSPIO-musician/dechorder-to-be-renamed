@@ -28,18 +28,21 @@ buildSpectrum freqDist = toRenderable $ execEC $ do
   setColors [opaque blue, opaque red]
   plot (line "frequency" [freqDist])
 
+updateSpectrum :: G.DrawingArea -> IO ()
+updateSpectrum canvas = do
+  let renderable = buildSpectrum [(0, 0), (1, 5), (2, 5)]
+  G.postGUIAsync $ void $ updateCanvas renderable canvas
+  threadDelay 2000000
+  let renderable = buildSpectrum [(0, 0), (1, 20), (2, 5)]
+  G.postGUIAsync $ void $ updateCanvas renderable canvas
+
 main :: IO ()
 main = do
   G.initGUI
   canvas <- G.drawingAreaNew
   window <- createRenderableWindowWithCanvas canvas 800 600
   G.on canvas G.exposeEvent $ do
-    liftIO $ threadDelay 2000000
-    let renderable = buildSpectrum [(0, 0), (1, 5), (2, 5)]
-    liftIO $ updateCanvas renderable canvas
-    liftIO $ threadDelay 2000000
-    let renderable = buildSpectrum [(0, 0), (1, 20), (2, 5)]
-    liftIO $ updateCanvas renderable canvas
+    liftIO $ forkIO $ updateSpectrum canvas
     -- let renderable = toRenderable $ execEC $ do
     --       layout_title .= "Amplitude Modulation"
     --       setColors [opaque blue, opaque red]
@@ -47,4 +50,11 @@ main = do
     --       plot (points "am points" (signal [0,7..400]))
     return True
   G.widgetShowAll window
+
+  -- Register event handler to properly quit the program
+  window `G.on` G.deleteEvent $ do
+    liftIO G.mainQuit
+    return False
+
+  -- Main loop
   G.mainGUI
