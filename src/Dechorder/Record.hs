@@ -6,17 +6,18 @@ import           Dechorder.Util
 import           Sound.Pulse.Simple
 
 
--- | Sampling parameters used when recording
+-- | Sampling parameters used when recording.
 data SamplingParams = SamplingParams { sampleRate :: SampleRate
                                      , duration :: Duration
                                      }
 
--- | The default sampling parameters when not specified
+-- | The default sampling parameters when not specified.
 defaultSamplingParams :: SamplingParams
 defaultSamplingParams = SamplingParams { sampleRate = 48000
                                        , duration = 0.1
                                        }
 
+-- | Record with PulseAudio for a given period at the given sample rate, as is specified in the sampling parameters.
 record :: Maybe SamplingParams
        -> IO SampleChunk
 record Nothing = record $ Just defaultSamplingParams
