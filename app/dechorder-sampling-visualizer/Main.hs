@@ -18,13 +18,13 @@ main :: IO ()
 main = do
   window <- SVGUI.createWindow
   SVGUI.afterInitialized window $ do
-    chan <- recordForever (Just 48000)
+    chan <- recordForever (Just sampleRate)
     forever $ do
-      slice <- take 4800 <$> BC.getChanContents chan
+      slice <- take (round $ fromIntegral sampleRate * duration) <$> BC.getChanContents chan
       let chunk = DI.toSampleChunk slice
           (slotWidth, result) = DI.chunkToFreqSlots
-            DI.SamplingParams{ sampleRate = sampleRate , duration = duration}
+            DI.SamplingParams{ sampleRate = sampleRate, duration = duration }
             chunk
-      let plottingData = zip [0..] (V.toList result)
+          plottingData = zip [0..] (V.toList result)
       SVGUI.updatePlottingArea window plottingData
   SVGUI.mainLoop
